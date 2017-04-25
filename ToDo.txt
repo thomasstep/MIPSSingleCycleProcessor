@@ -15,7 +15,7 @@ To Do:
 -Extend ALU
 	-addu, subu, addiu (done)
 	-add, sub, addi (done)
-	-and, andi, or, ori, xor, xori (not done)
+	-and, andi, or, ori, xor, xori (not done) (need 6-bit opcode for xori)
 	-sll, sra, srl (not done)
 	-slt, slti, sltu, sltiu (not done)
 	-beq, bne, j (not done)

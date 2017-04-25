@@ -1,15 +1,21 @@
 // By Thomas Step
 // http://www2.engr.arizona.edu/~ece369/Resources/spim/MIPSReference.pdf
 
-// repetoire of operations for general Control Unit, defined by Instruction[31:26]
+// Repetoire of operations for general Control Unit, defined by Instruction[31:26]
 `define RTYPE 6'b000000 // R-Type instruction
 `define LW 6'b100011 // Load Word instruction
 `define SW 6'b101011 // Store Word instruction
 `define BRANCH 6'b000100 // Branch instruction
+
 // The following opcodes are used in the second part of the project
-// R-Types: addu, subu,
+// Some instructions for the second part of this program are R-Type
+
+// Adding signed and unsigned arithmetic instructions
 `define ADDI 6'b001000 // addi instr
 `define ADDIU 6'b001001 // addiu instruction
+// Adding logical instructions
+`define ANDI 6'b001010 // andi instruction
+`define ORI 6'b001101 // ori instruction
 
 module generalControl(RegDst, Branch, MemRead, MemtoReg, ALUOp, MemWrite, ALUSrc, RegWrite, Instruction);
 
@@ -81,6 +87,26 @@ module generalControl(RegDst, Branch, MemRead, MemtoReg, ALUOp, MemWrite, ALUSrc
 				MemWrite = 1'b0;
 				Branch = 1'b0;
 				ALUOp = 4'b0101;	
+			end
+			`ANDI: begin
+				RegDst = 1'b0;
+				ALUSrc = 1'b1;
+				MemtoReg = 1'b0;
+				RegWrite = 1'b1;
+				MemRead = 1'b0;
+				MemWrite = 1'b0;
+				Branch = 1'b0;
+				ALUOp = 4'b0110;	
+			end
+			`ORI: begin
+				RegDst = 1'b0;
+				ALUSrc = 1'b1;
+				MemtoReg = 1'b0;
+				RegWrite = 1'b1;
+				MemRead = 1'b0;
+				MemWrite = 1'b0;
+				Branch = 1'b0;
+				ALUOp = 4'b0111;	
 			end
 		endcase
 	end

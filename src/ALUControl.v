@@ -1,10 +1,12 @@
 // By Thomas Step
 
 // Possible ALUOp
-`define ADDI 6'b001000 // addi instr
-`define ADDIU 6'b001001 // addiu instruction
+`define ADDI 4'b0100 // addi instr
+`define ADDIU 4'b0101 // addiu instruction
+`define ANDI 4'b0110 // andi instruction
 `define BRANCH 4'b0001 // Branch instruction
 `define LSW 4'b0000 // Load/Store Word instruction
+`define ORI 4'b0111 // ori instruction
 `define RTYPE 4'b0010 // R-Type instruction
 
 
@@ -14,6 +16,7 @@
 `define ADDUF 6'b100001 // Field where unsigned addition is needed
 `define ANDF 6'b100100 // Field where AND is needed
 `define ORF 6'b100101 // Field where OR is needed
+`define XORF 6'b100110 // Field where XOR is needed
 `define SETLTF 6'b101010 // Field where set on less than is needed
 `define SUBF 6'b100010 // Field where subtraction field
 `define SUBUF 6'b100011 // Field where unsigned subtraction is needed
@@ -44,6 +47,15 @@ module ALUControl(ALUFunc, ALUOp, Instruction);
 	always@(Instruction or ALUOp)
 	begin
 		case(ALUOp)
+			`ADDI: begin
+				ALUFunc = `ADD;
+			end
+			`ADDIU: begin
+				ALUFunc = `ADDU;
+			end
+			`ANDI: begin
+				ALUFunc = `AND;
+			end
 			`BRANCH: begin
 				ALUFunc = `SUB;
 			end
@@ -72,6 +84,9 @@ module ALUControl(ALUFunc, ALUOp, Instruction);
 					end
 					`SUBUF: begin
 						ALUFunc = `SUBU;
+					end
+					`XOR: begin
+						ALUFunc = `XOR;
 					end
 				endcase
 			end
