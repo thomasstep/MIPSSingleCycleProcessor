@@ -1,10 +1,11 @@
 // By Thomas Step
 
 // Possible ALUOp
-`define ADDU
-`define BRANCH 2'b0001 // Branch instruction
-`define LSW 2'b0000 // Load/Store Word instruction
-`define RTYPE 2'b0010 // R-Type instruction
+`define ADDI 6'b001000 // addi instr
+`define ADDIU 6'b001001 // addiu instruction
+`define BRANCH 4'b0001 // Branch instruction
+`define LSW 4'b0000 // Load/Store Word instruction
+`define RTYPE 4'b0010 // R-Type instruction
 
 
 // Possible Instruction funct fields
@@ -25,10 +26,10 @@
 `define ADDU 4'b0001 // unsigned add
 `define AND  4'b0100 // bitwise AND
 `define OR   4'b0101 // bitwise OR
-`define SUB  4'b0010 // 2's compl subtract
-`define SUBU 4'b0011 // unsigned subtract
 `define SLT  4'b1010 // set result=1 if less than 2's compl
 `define SLTU 4'b1011 // set result=1 if less than unsigned
+`define SUB  4'b0010 // 2's compl subtract
+`define SUBU 4'b0011 // unsigned subtract
 `define XOR  4'b0110 // bitwise XOR
 
 `define NOP  4'b0000 // do nothing
@@ -43,13 +44,19 @@ module ALUControl(ALUFunc, ALUOp, Instruction);
 	always@(Instruction or ALUOp)
 	begin
 		case(ALUOp)
+			`BRANCH: begin
+				ALUFunc = `SUB;
+			end
+			`LSW: begin
+				ALUFunc = `ADD;
+			end
 			`RTYPE: begin
 				case(Instruction)
 					`ADDF: begin
 						ALUFunc = `ADD;
 					end
-					`SUBF: begin
-						ALUFunc = `SUB;
+					`ADDUF: begin
+						ALUFunc = `ADDU;
 					end
 					`ANDF: begin
 						ALUFunc = `AND;
@@ -60,16 +67,13 @@ module ALUControl(ALUFunc, ALUOp, Instruction);
 					`SETLTF: begin
 						ALUFunc = `SLT;
 					end
-					`ADDUF: begin
-						ALUFunc = `ADDU;
+					`SUBF: begin
+						ALUFunc = `SUB;
+					end
+					`SUBUF: begin
+						ALUFunc = `SUBU;
 					end
 				endcase
-			end
-			`LSW: begin
-				ALUFunc = `ADD;
-			end
-			`BRANCH: begin
-				ALUFunc = `SUB;
 			end
 		endcase
 	end

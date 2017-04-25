@@ -8,6 +8,10 @@ To Do:
 	-1 write port, enabled by RegWrite signal
 -Build general CU (done)
 -Build ALU CU (done)
+
+
+
+
 -Extend ALU
 	-addu, subu, addiu (done)
 	-add, sub, addi (done)
