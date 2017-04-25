@@ -1,0 +1,18 @@
+To Do:
+-PC register (6.1) (done)
+-Read/Fetch an Instruction from InstrMem (not done)
+	-Store in register named IR
+-Build register file (done)
+	-32 32-bit regs
+	-2 read ports
+	-1 write port, enabled by RegWrite signal
+-Build general CU (done)
+-Build ALU CU (done)
+-Extend ALU
+	-addu, subu, addiu (done)
+	-add, sub, addi (done)
+	-and, andi, or, ori, xor, xori (not done)
+	-sll, sra, srl (not done)
+	-slt, slti, sltu, sltiu (not done)
+	-beq, bne, j (not done)
+	-lw, sw (not done)
