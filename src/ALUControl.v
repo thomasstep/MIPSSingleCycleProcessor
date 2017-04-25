@@ -18,6 +18,8 @@
 `define ORF 6'b100101 // Field where OR is needed
 `define XORF 6'b100110 // Field where XOR is needed
 `define SETLTF 6'b101010 // Field where set on less than is needed
+`define SLLF 6'b000000 // Field where SLL is needed
+`define SRLF 6'b000010 // Field where SRL is needed
 `define SUBF 6'b100010 // Field where subtraction field
 `define SUBUF 6'b100011 // Field where unsigned subtraction is needed
 
@@ -29,8 +31,10 @@
 `define ADDU 4'b0001 // unsigned add
 `define AND  4'b0100 // bitwise AND
 `define OR   4'b0101 // bitwise OR
+`define SLL  4'b1000 // shift left logical
 `define SLT  4'b1010 // set result=1 if less than 2's compl
 `define SLTU 4'b1011 // set result=1 if less than unsigned
+`define SRL  4'b1001 // shift right logical
 `define SUB  4'b0010 // 2's compl subtract
 `define SUBU 4'b0011 // unsigned subtract
 `define XOR  4'b0110 // bitwise XOR
@@ -78,6 +82,12 @@ module ALUControl(ALUFunc, ALUOp, Instruction);
 					end
 					`SETLTF: begin
 						ALUFunc = `SLT;
+					end
+					`SLLF: begin
+						ALUFunc = `SLL;
+					end
+					`SRLF: begin
+						ALUFunc = `SRL;
 					end
 					`SUBF: begin
 						ALUFunc = `SUB;

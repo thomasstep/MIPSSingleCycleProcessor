@@ -19,13 +19,16 @@
 // repetoire of operations for ALU, selected by ALU_ctr (change at will)
 `define ADD  4'b0111 // 2's compl add
 `define ADDU 4'b0001 // unsigned add
-`define SUB  4'b0010 // 2's compl subtract
-`define SUBU 4'b0011 // unsigned subtract
 `define AND  4'b0100 // bitwise AND
 `define OR   4'b0101 // bitwise OR
-`define XOR  4'b0110 // bitwise XOR
+`define SLL  4'b1000 // shift left logical
 `define SLT  4'b1010 // set result=1 if less than 2's compl
 `define SLTU 4'b1011 // set result=1 if less than unsigned
+`define SRL  4'b1001 // shift right logical
+`define SUB  4'b0010 // 2's compl subtract
+`define SUBU 4'b0011 // unsigned subtract
+`define XOR  4'b0110 // bitwise XOR
+
 `define NOP  4'b0000 // do nothing
 
 module ALU_behav( ADin, BDin, ALU_ctr, Result, Overflow, Carry_in, Carry_out, Zero ); 
@@ -55,6 +58,7 @@ module ALU_behav( ADin, BDin, ALU_ctr, Result, Overflow, Carry_in, Carry_out, Ze
 			 | ~ADin[n-1] & BDin[n-1] & ~Result[n-1];
 	   end
 	   `SUBU: {Overflow, Result} = ADin - BDin;
+	   `SLL: Result = ADin << BDin;
 	   `SLT:  begin
 	      {Carry_out, tmp} = ADin - BDin;
 	      Overflow = ADin[n-1] & ~BDin[n-1] & ~tmp[n-1] 
@@ -73,6 +77,7 @@ module ALU_behav( ADin, BDin, ALU_ctr, Result, Overflow, Carry_in, Carry_out, Ze
 	      Result = Carry_out;
 	      $display("SLTU:+R=%d [%b]", Result, Result );
 	   end
+	   `SRL: Result ADin >> BDin;
 	   `OR :  Result = ADin | BDin;
 	   `AND:  Result = ADin & BDin;
 	   `XOR:  Result = ADin ^ BDin;

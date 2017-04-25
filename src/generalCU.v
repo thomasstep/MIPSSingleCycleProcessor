@@ -16,6 +16,7 @@
 // Adding logical instructions
 `define ANDI 6'b001010 // andi instruction
 `define ORI 6'b001101 // ori instruction
+//`define XORI 6'b
 
 module generalControl(RegDst, Branch, MemRead, MemtoReg, ALUOp, MemWrite, ALUSrc, RegWrite, Instruction);
 
