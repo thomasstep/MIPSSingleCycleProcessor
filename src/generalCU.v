@@ -10,13 +10,25 @@
 // The following opcodes are used in the second part of the project
 // Some instructions for the second part of this program are R-Type
 
-// Adding signed and unsigned arithmetic instructions
-`define ADDI 6'b001000 // addi instr
-`define ADDIU 6'b001001 // addiu instruction
-// Adding logical instructions
-`define ANDI 6'b001010 // andi instruction
-`define ORI 6'b001101 // ori instruction
-//`define XORI 6'b
+//I-Type (All opcodes except 000000, 00001x, and 0100xx)
+`define ADDI    6'b001000
+`define ADDIU   6'b001001
+`define ANDI    6'b001100
+`define BEQ     6'b000100
+`define BNE     6'b000101
+`define BLEZ    6'b000110
+`define BLTZ    6'b000001
+`define ORI     6'b001101
+`define XORI    6'b001110
+`define NOP     6'b110110
+`define LUI     6'b001111
+`define SLTI    6'b001010
+`define SLTIU   6'b001011
+`define LB      6'b100000
+`define SB      6'b101000
+// J-Type (Opcode 00001x)
+`define J       6'b000010
+`define JAL     6'b000011
 
 module generalControl(RegDst, Branch, MemRead, MemtoReg, ALUOp, MemWrite, ALUSrc, RegWrite, Instruction);
 
@@ -108,6 +120,16 @@ module generalControl(RegDst, Branch, MemRead, MemtoReg, ALUOp, MemWrite, ALUSrc
 				MemWrite = 1'b0;
 				Branch = 1'b0;
 				ALUOp = 4'b0111;	
+			end
+			`XORI: begin
+				RegDst = 1'b0;
+				ALUSrc = 1'b1;
+				MemtoReg = 1'b0;
+				RegWrite = 1'b1;
+				MemRead = 1'b0;
+				MemWrite = 1'b0;
+				Branch = 1'b0;
+				ALUOp = 4'b1000;
 			end
 		endcase
 	end

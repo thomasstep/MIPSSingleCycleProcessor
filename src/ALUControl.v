@@ -1,13 +1,29 @@
 // By Thomas Step
 
 // Possible ALUOp
-`define ADDI 4'b0100 // addi instr
-`define ADDIU 4'b0101 // addiu instruction
-`define ANDI 4'b0110 // andi instruction
-`define BRANCH 4'b0001 // Branch instruction
-`define LSW 4'b0000 // Load/Store Word instruction
-`define ORI 4'b0111 // ori instruction
-`define RTYPE 4'b0010 // R-Type instruction
+`define RTYPE 6'b000000 // R-Type instruction
+`define LW 6'b100011 // Load Word instruction
+`define SW 6'b101011 // Store Word instruction
+`define BRANCH 6'b000100 // Branch instruction
+//I-Type (All opcodes except 000000, 00001x, and 0100xx)
+`define ADDI    6'b001000
+`define ADDIU   6'b001001
+`define ANDI    6'b001100
+`define BEQ     6'b000100
+`define BNE     6'b000101
+`define BLEZ    6'b000110
+`define BLTZ    6'b000001
+`define ORI     6'b001101
+`define XORI    6'b001110
+`define NOP     6'b110110
+`define LUI     6'b001111
+`define SLTI    6'b001010
+`define SLTIU   6'b001011
+`define LB      6'b100000
+`define SB      6'b101000
+// J-Type (Opcode 00001x)
+`define J       6'b000010
+`define JAL     6'b000011
 
 
 // Possible Instruction funct fields
@@ -51,21 +67,6 @@ module ALUControl(ALUFunc, ALUOp, Instruction);
 	always@(Instruction or ALUOp)
 	begin
 		case(ALUOp)
-			`ADDI: begin
-				ALUFunc = `ADD;
-			end
-			`ADDIU: begin
-				ALUFunc = `ADDU;
-			end
-			`ANDI: begin
-				ALUFunc = `AND;
-			end
-			`BRANCH: begin
-				ALUFunc = `SUB;
-			end
-			`LSW: begin
-				ALUFunc = `ADD;
-			end
 			`RTYPE: begin
 				case(Instruction)
 					`ADDF: begin
@@ -99,6 +100,27 @@ module ALUControl(ALUFunc, ALUOp, Instruction);
 						ALUFunc = `XOR;
 					end
 				endcase
+			end
+			`LSW: begin
+				ALUFunc = `ADD;
+			end
+			`BRANCH: begin
+				ALUFunc = `SUB;
+			end
+			`ADDI: begin
+				ALUFunc = `ADD;
+			end
+			`ADDIU: begin
+				ALUFunc = `ADDU;
+			end
+			`ANDI: begin
+				ALUFunc = `AND;
+			end
+			`ORI: begin
+				ALUFunc = `OR;
+			end
+			`XORI: begin
+				ALUFunc = `XOR;
 			end
 		endcase
 	end
