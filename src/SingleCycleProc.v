@@ -49,6 +49,7 @@
 `include "RegisterFile.v"
 `include "signextend.v"
 `include "ALU_behav.v"
+`include "m555.v"
 
 /*-------------------------- CPU -------------------------------
  * This module implements a single-cycle
@@ -121,25 +122,6 @@ module SingleCycleProc(CLK, Reset_L, startPC, dmemOut);
    */
    
 endmodule // CPU
-
-
-module m555 (CLK);
-   parameter StartTime = 0, Ton = 50, Toff = 50, Tcc = Ton+Toff; // 
- 
-   output CLK;
-   reg 	  CLK;
-   
-   initial begin
-      #StartTime CLK = 0;
-   end
-   
-   // The following is correct if clock starts at LOW level at StartTime //
-   always begin
-      #Toff CLK = ~CLK;
-      #Ton CLK = ~CLK;
-   end
-endmodule
-
    
 module testCPU(Reset_L, startPC, testData);
    input [31:0] testData;

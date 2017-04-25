@@ -77,7 +77,7 @@ module ALU_behav( ADin, BDin, ALU_ctr, Result, Overflow, Carry_in, Carry_out, Ze
 	      Result = Carry_out;
 	      $display("SLTU:+R=%d [%b]", Result, Result );
 	   end
-	   `SRL: Result ADin >> BDin;
+	   `SRL: Result = ADin >> BDin;
 	   `OR :  Result = ADin | BDin;
 	   `AND:  Result = ADin & BDin;
 	   `XOR:  Result = ADin ^ BDin;

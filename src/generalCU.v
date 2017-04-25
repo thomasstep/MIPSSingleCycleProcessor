@@ -113,7 +113,7 @@ module generalControl(RegDst, Branch, MemRead, MemtoReg, ALUOp, MemWrite, ALUSrc
 	end
 endmodule
 
-module TestGenCU;
+/*module TestGenCU;
 
 	reg [5:0] I;
 	wire  RD, B, MR, MtR, MW, AS, RW;
@@ -130,4 +130,4 @@ module TestGenCU;
     	#10 I = `BRANCH;
     	#100 $finish;
     end
-endmodule
+endmodule*/

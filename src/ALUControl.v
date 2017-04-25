@@ -105,7 +105,7 @@ module ALUControl(ALUFunc, ALUOp, Instruction);
 
 endmodule
 
-module TestGenCU;
+/*module TestALUCU;
 
 	reg [5:0] I;
 	reg[1:0] AO;
@@ -125,4 +125,4 @@ module TestGenCU;
     	#10 AO = `BRANCH;
     	#100 $finish;
     end
-endmodule
+endmodule*/
