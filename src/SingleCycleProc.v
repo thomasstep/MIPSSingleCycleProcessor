@@ -42,6 +42,13 @@
 // Top Level Architecture Model //
 
 `include "IdealMemory.v"
+`include "ALUControl.v"
+`include "PCRegister.v"
+`include "generalCU.v"
+`include "mux.v"
+`include "RegisterFile.v"
+`include "signextend.v"
+`include "ALU_behav.v"
 
 /*-------------------------- CPU -------------------------------
  * This module implements a single-cycle
@@ -78,12 +85,21 @@ module SingleCycleProc(CLK, Reset_L, startPC, dmemOut);
    input [31:0] startPC;
    output [31:0] dmemOut;
 
+   wire[31:0] PCwire, Instr, Reg1, Reg2, Data, Immed, ALUin, Result;
+   wire [3:0] ALUOp, ALUFunc;
+   wire [4:0] Memaddr;
+   wire Zero, RegDst, ALUSrc, MemtoReg, RegWrite, MemRead, MemWrite, Branch, Jump, SignExtend;
 
-
-//
-// INSERT YOUR CPU MODULES HERE
-//
-
+   PCRegister PC1(PCwire, startPC, Reset_L, CLK);
+   InstrMem IM1(PCwire, Instr);
+   // Might need to add jump and signextend to CU
+   generalControl Ctrl(RegDst, Branch, MemRead, MemtoReg, ALUOp, MemWrite, ALUSrc, RegWrite, Instr[31:26]);
+   ALUControl ALUctrl(ALUFunc, ALUOp, Instr[5:0]);
+   MUX5_2to1 MUX1(Reg2, Immed, ALUSrc, ALUin);
+   RegisterFile RF(Reg1, Reg2, Instr[25:21], Instr[20:16], Memaddr, Dat, RegWrite, Reset_L, CLK);
+   SIGN_EXTEND SE(Instr[15:0], Immed);
+   MUX32_2to1 MUX2(Reg2, Immed, ALUSrc, ALUin);
+   ALU_behav ALU(Reg1, ALUin, ALUfunc, Data, Overflow, 1'b0, Carry_out, Zero);
 
 
 //
