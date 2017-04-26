@@ -18,8 +18,8 @@ module InstrMem (Mem_Addr, Dout);
    //`include "imeminit.v"
    // Include your test program file here instead of "imeminit.v"
     `include "imeminit_simple_test.v"
-always
-      #T_rd assign  Dout = Mem[ Mem_Addr >> 2 ];
+always@(*)
+      Dout <= #T_rd Mem[ Mem_Addr >> 2 ];
 endmodule // Imem
 
 // DataMem is an asynchronous read, synchronous write memory model //

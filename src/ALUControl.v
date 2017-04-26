@@ -61,7 +61,7 @@
 
 module ALUControl(ALUFunc, ALUOp, Instruction);
 
-	input[1:0] ALUOp;
+	input[3:0] ALUOp;
 	input[5:0] Instruction; // This is the funct field from the instruction
 	output[3:0] ALUFunc;
 	reg[3:0] ALUFunc;
@@ -109,7 +109,10 @@ module ALUControl(ALUFunc, ALUOp, Instruction);
 					end
 				endcase
 			end
-			`LSW: begin
+			`LW: begin
+				ALUFunc = `ADD;
+			end
+			`SW: begin
 				ALUFunc = `ADD;
 			end
 			`BRANCH: begin
@@ -134,7 +137,7 @@ module ALUControl(ALUFunc, ALUOp, Instruction);
 				ALUFunc = `SLT;
 			end
 			`SLTIU: begin
-				ALUFunc = `STLU;
+				ALUFunc = `SLTU;
 			end
 		endcase
 	end

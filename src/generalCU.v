@@ -36,7 +36,7 @@ module generalControl(RegDst, Branch, MemRead, MemtoReg, ALUOp, MemWrite, ALUSrc
 	output RegDst, Branch, MemRead, MemtoReg, MemWrite, ALUSrc, RegWrite;
 	output[3:0] ALUOp;
 	reg RegDst, Branch, MemRead, MemtoReg, MemWrite, ALUSrc, RegWrite;
-	reg[1:0] ALUOp;
+	reg[3:0] ALUOp;
 
 	always@(Instruction)
 	begin
@@ -151,6 +151,15 @@ module generalControl(RegDst, Branch, MemRead, MemtoReg, ALUOp, MemWrite, ALUSrc
 				Branch = 1'b0;
 				ALUOp = 4'b1010;
 			end
+			/*`BEQ: begin
+
+			end
+			`BNE: begin
+
+			end
+			`J: begin
+
+			end*/
 		endcase
 	end
 endmodule

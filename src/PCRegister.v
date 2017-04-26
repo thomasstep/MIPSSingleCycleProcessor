@@ -1,7 +1,7 @@
 // By Thomas Step
 
 `define FOUR 32'b00000000000000000000000000000100
-`include "m555.v"
+//`include "m555.v"
 
 module PCRegister(PC, startPC, Reset_L, Clock);
 
@@ -23,7 +23,7 @@ module PCRegister(PC, startPC, Reset_L, Clock);
 	end
 endmodule
 
-module TestPCReg;
+/*module TestPCReg;
 
    reg [31:0] sPC;
    reg RL;
@@ -46,4 +46,4 @@ module TestPCReg;
     	#100
     	#100 $finish;
     end
-endmodule
+endmodule*/

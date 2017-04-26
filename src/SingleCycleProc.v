@@ -96,30 +96,30 @@ module SingleCycleProc(CLK, Reset_L, startPC, dmemOut);
    // Might need to add jump and signextend to CU
    generalControl Ctrl(RegDst, Branch, MemRead, MemtoReg, ALUOp, MemWrite, ALUSrc, RegWrite, Instr[31:26]);
    ALUControl ALUctrl(ALUFunc, ALUOp, Instr[5:0]);
-   MUX5_2to1 MUX1(Reg2, Immed, ALUSrc, ALUin);
-   RegisterFile RF(Reg1, Reg2, Instr[25:21], Instr[20:16], Memaddr, Dat, RegWrite, Reset_L, CLK);
+   MUX5_2to1 MUX1(Instr[20:16], Instr[15:11], RegDst, Memaddr);
+   RegisterFile RF(Reg1, Reg2, Instr[25:21], Instr[20:16], Memaddr, Data, RegWrite, Reset_L, CLK);
    SIGN_EXTEND SE(Instr[15:0], Immed);
    MUX32_2to1 MUX2(Reg2, Immed, ALUSrc, ALUin);
-   ALU_behav ALU(Reg1, ALUin, ALUfunc, Data, Overflow, 1'b0, Carry_out, Zero);
+   ALU_behav ALU(Reg1, ALUin, ALUFunc, Data, Overflow, 1'b0, Carry_out, Zero);
 
 
 //
 // Debugging threads that you may find helpful (you may have
 // to change the variable names).
 //
-   /*  Monitor changes in the program counter
-   always @(PC)
-     #10 $display($time," PC=%d Instr: op=%d rs=%d rt=%d rd=%d imm16=%d funct=%d",
-	PC,Instr[31:26],Instr[25:21],Instr[20:16],Instr[15:11],Instr[15:0],Instr[5:0]);
-   */
+   /*  Monitor changes in the program counter*/
+   always @(PCwire)
+     #10 $display($time," PCwire=%d Instr: op=%d rs=%d rt=%d rd=%d imm16=%d funct=%d",
+	PCwire,Instr[31:26],Instr[25:21],Instr[20:16],Instr[15:11],Instr[15:0],Instr[5:0]);
+   
 
-   /*   Monitors memory writes
+   /*   Monitors memory writes*/
    always @(MemWrite)
 	begin
 	#1 $display($time," MemWrite=%b clock=%d addr=%d data=%d", 
-	            MemWrite, clock, dmemaddr, rportb);
+	            MemWrite, CLK, PCwire, Instr);
 	end
-   */
+   
    
 endmodule // CPU
    
