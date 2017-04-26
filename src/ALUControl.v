@@ -1,29 +1,29 @@
 // By Thomas Step
 
 // Possible ALUOp
-`define RTYPE 6'b000000 // R-Type instruction
-`define LW 6'b100011 // Load Word instruction
-`define SW 6'b101011 // Store Word instruction
-`define BRANCH 6'b000100 // Branch instruction
+`define RTYPE   4'b0010 // R-Type instruction
+`define LW      4'b0000 // Load Word instruction
+`define SW      4'b0000 // Store Word instruction
+`define BRANCH  4'b0001 // Branch instruction
 //I-Type (All opcodes except 000000, 00001x, and 0100xx)
-`define ADDI    6'b001000
-`define ADDIU   6'b001001
-`define ANDI    6'b001100
-`define BEQ     6'b000100
-`define BNE     6'b000101
-`define BLEZ    6'b000110
-`define BLTZ    6'b000001
-`define ORI     6'b001101
-`define XORI    6'b001110
-`define NOP     6'b110110
-`define LUI     6'b001111
-`define SLTI    6'b001010
-`define SLTIU   6'b001011
-`define LB      6'b100000
-`define SB      6'b101000
+`define ADDI    4'b0100
+`define ADDIU   4'b0101
+`define ANDI    4'b0110
+`define BEQ     4'b000100
+`define BNE     4'b000101
+`define BLEZ    4'b000110
+`define BLTZ    4'b000001
+`define ORI     4'b0111
+`define XORI    4'b1000
+`define NOP     4'b110110
+`define LUI     4'b001111
+`define SLTI    4'b1001
+`define SLTIU   4'b1010
+`define LB      4'b100000
+`define SB      4'b101000
 // J-Type (Opcode 00001x)
-`define J       6'b000010
-`define JAL     6'b000011
+`define J       4'b000010
+`define JAL     4'b000011
 
 
 // Possible Instruction funct fields
@@ -35,6 +35,8 @@
 `define XORF 6'b100110 // Field where XOR is needed
 `define SETLTF 6'b101010 // Field where set on less than is needed
 `define SLLF 6'b000000 // Field where SLL is needed
+`define SLTF 6'b101010 // Field where SLT is needed
+`define SLTUF 6'b101011 // Field where SLTU is needed
 `define SRLF 6'b000010 // Field where SRL is needed
 `define SUBF 6'b100010 // Field where subtraction field
 `define SUBUF 6'b100011 // Field where unsigned subtraction is needed
@@ -87,6 +89,12 @@ module ALUControl(ALUFunc, ALUOp, Instruction);
 					`SLLF: begin
 						ALUFunc = `SLL;
 					end
+					`SLTF: begin
+						ALUFunc = `SLT;
+					end
+					`SLTUF: begin
+						ALUFunc = `SLTU;
+					end
 					`SRLF: begin
 						ALUFunc = `SRL;
 					end
@@ -121,6 +129,12 @@ module ALUControl(ALUFunc, ALUOp, Instruction);
 			end
 			`XORI: begin
 				ALUFunc = `XOR;
+			end
+			`SLTI: begin
+				ALUFunc = `SLT;
+			end
+			`SLTIU: begin
+				ALUFunc = `STLU;
 			end
 		endcase
 	end

@@ -131,6 +131,26 @@ module generalControl(RegDst, Branch, MemRead, MemtoReg, ALUOp, MemWrite, ALUSrc
 				Branch = 1'b0;
 				ALUOp = 4'b1000;
 			end
+			`SLTI: begin
+				RegDst = 1'b0;
+				ALUSrc = 1'b1;
+				MemtoReg = 1'b0;
+				RegWrite = 1'b1;
+				MemRead = 1'b0;
+				MemWrite = 1'b0;
+				Branch = 1'b0;
+				ALUOp = 4'b1001;
+			end
+			`SLTIU: begin
+				RegDst = 1'b0;
+				ALUSrc = 1'b1;
+				MemtoReg = 1'b0;
+				RegWrite = 1'b1;
+				MemRead = 1'b0;
+				MemWrite = 1'b0;
+				Branch = 1'b0;
+				ALUOp = 4'b1010;
+			end
 		endcase
 	end
 endmodule
