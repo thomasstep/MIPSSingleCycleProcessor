@@ -4,6 +4,7 @@
 
 // instruction opcode
 //R-Type (Opcode 000000)
+`define RTYPE          6'b000000
 `define OPCODE_ADD     6'b000000
 `define OPCODE_SUB     6'b000000
 `define OPCODE_ADDU    6'b000000
@@ -113,12 +114,12 @@ module SingleCycleProc(CLK, Reset_L, startPC, dmemOut);
 	PCwire,Instr[31:26],Instr[25:21],Instr[20:16],Instr[15:11],Instr[15:0],Instr[5:0]);
    
 
-   /*   Monitors memory writes*/
+   /*   Monitors memory writes
    always @(MemWrite)
 	begin
 	#1 $display($time," MemWrite=%b clock=%d addr=%d data=%d", 
 	            MemWrite, CLK, PCwire, Instr);
-	end
+	end */
    
    
 endmodule // CPU
@@ -132,10 +133,10 @@ module testCPU(Reset_L, startPC, testData);
    
    initial begin
       // Your program 1
-      Reset_L = 0;  startPC = 0 * 4;
+      Reset_L = 0; startPC = 0 * 4;
       #101 // insures reset is asserted across negative clock edge
 	  Reset_L = 1; 
-      #10000; // allow enough time for program 1 to run to completion
+      #710; // allow enough time for program 1 to run to completion
       Reset_L = 0;
       #1 $display ("Program 1: Result: %d", testData);
       

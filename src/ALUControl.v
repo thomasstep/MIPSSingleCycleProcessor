@@ -37,6 +37,7 @@
 `define SLLF 6'b000000 // Field where SLL is needed
 `define SLTF 6'b101010 // Field where SLT is needed
 `define SLTUF 6'b101011 // Field where SLTU is needed
+`define SRAF 6'b000011 // Field where SRA is needed
 `define SRLF 6'b000010 // Field where SRL is needed
 `define SUBF 6'b100010 // Field where subtraction field
 `define SUBUF 6'b100011 // Field where unsigned subtraction is needed
@@ -52,6 +53,7 @@
 `define SLL  4'b1000 // shift left logical
 `define SLT  4'b1010 // set result=1 if less than 2's compl
 `define SLTU 4'b1011 // set result=1 if less than unsigned
+`define SRA  4'b1100 // shift right arithmetic
 `define SRL  4'b1001 // shift right logical
 `define SUB  4'b0010 // 2's compl subtract
 `define SUBU 4'b0011 // unsigned subtract
@@ -94,6 +96,9 @@ module ALUControl(ALUFunc, ALUOp, Instruction);
 					end
 					`SLTUF: begin
 						ALUFunc = `SLTU;
+					end
+					`SRAF: begin
+						ALUFunc = `SRA;
 					end
 					`SRLF: begin
 						ALUFunc = `SRL;

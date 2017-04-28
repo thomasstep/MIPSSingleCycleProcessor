@@ -7,7 +7,7 @@ module RegisterFile(ReadDataOne, ReadDataTwo, ReadRegOne, ReadRegTwo, WriteReg, 
 	input[4:0] ReadRegOne, ReadRegTwo, WriteReg;
 	input RegWrite, Clock, Reset_L;
 	output[31:0] ReadDataOne, ReadDataTwo;
-	reg[31:0] ReadDataOne, ReadDataTwo;
+	//reg[31:0] ReadDataOne, ReadDataTwo;
 
 	reg[31:0] Registers [0:31]; // 32 32-bit registers
 
@@ -47,50 +47,51 @@ module RegisterFile(ReadDataOne, ReadDataTwo, ReadRegOne, ReadRegTwo, WriteReg, 
 		Registers[31] = 32'h00000000;
 	end*/
 
-	always@(posedge Clock or Reset_L)
-	begin
-		ReadDataOne = Registers[ReadRegOne];
-		ReadDataTwo = Registers[ReadRegTwo];
+	assign ReadDataOne = Registers[ReadRegOne];
+	assign ReadDataTwo = Registers[ReadRegTwo];
 
+	always@(negedge Clock or Reset_L)
+	begin
 		if(RegWrite == 1'b1) 
 		begin
-			Registers[WriteReg] = WriteData;
+			Registers[WriteReg] <= WriteData;
+			$display("FirstReg: %d; SecondReg: %d; WriteReg: %d; Data: %d; Reset: %d;\n0 = %d;\n1 = %d;\n2 = %d;\n3 = %d;\n4 = %d;\n5 = %d;\n6 = %d;\n7 = %d;\n8 = %d;\n9 = %d;\n10 = %d;\n11 = %d;\n12 = %d;\n13 = %d;\n14 = %d;\n15 = %d;\n16 = %d;\n",ReadRegOne,ReadRegTwo,WriteReg,WriteData,Reset_L,Registers[0],Registers[1],Registers[2],Registers[3],Registers[4],Registers[5],Registers[6],Registers[7],Registers[8],Registers[9],Registers[10],Registers[11],Registers[12],Registers[13],Registers[14],Registers[15],Registers[16],Registers[17]);
 		end
 		if(Reset_L == 1'b0) // If Reset_L is activated
 		begin // Set all registers to 0
 			// I would have used a for loop, but I already had all of this written for testing
-			Registers[0] = 32'h00000000;
-			Registers[1] = 32'h00000000;
-			Registers[2] = 32'h00000000;
-			Registers[3] = 32'h00000000;
-			Registers[4] = 32'h00000000;
-			Registers[5] = 32'h00000000;
-			Registers[6] = 32'h00000000;
-			Registers[7] = 32'h00000000;
-			Registers[8] = 32'h00000000;
-			Registers[9] = 32'h00000000;
-			Registers[10] = 32'h00000000;
-			Registers[11] = 32'h00000000;
-			Registers[12] = 32'h00000000;
-			Registers[13] = 32'h00000000;
-			Registers[14] = 32'h00000000;
-			Registers[15] = 32'h00000000;
-			Registers[16] = 32'h00000000;
-			Registers[17] = 32'h00000000;
-			Registers[18] = 32'h00000000;
-			Registers[19] = 32'h00000000;
-			Registers[20] = 32'h00000000;
-			Registers[21] = 32'h00000000;
-			Registers[22] = 32'h00000000;
-			Registers[23] = 32'h00000000;
-			Registers[24] = 32'h00000000;
-			Registers[25] = 32'h00000000;
-			Registers[26] = 32'h00000000;
-			Registers[27] = 32'h00000000;
-			Registers[28] = 32'h00000000;
-			Registers[29] = 32'h00000000;
-			Registers[30] = 32'h00000000;
-			Registers[31] = 32'h00000000;
+			Registers[0] <= 32'h00000000;
+			Registers[1] <= 32'h00000000;
+			Registers[2] <= 32'h00000000;
+			Registers[3] <= 32'h00000000;
+			Registers[4] <= 32'h00000000;
+			Registers[5] <= 32'h00000000;
+			Registers[6] <= 32'h00000000;
+			Registers[7] <= 32'h00000000;
+			Registers[8] <= 32'h00000000;
+			Registers[9] <= 32'h00000000;
+			Registers[10] <= 32'h00000000;
+			Registers[11] <= 32'h00000000;
+			Registers[12] <= 32'h00000000;
+			Registers[13] <= 32'h00000000;
+			Registers[14] <= 32'h00000000;
+			Registers[15] <= 32'h00000000;
+			Registers[16] <= 32'h00000000;
+			Registers[17] <= 32'h00000000;
+			Registers[18] <= 32'h00000000;
+			Registers[19] <= 32'h00000000;
+			Registers[20] <= 32'h00000000;
+			Registers[21] <= 32'h00000000;
+			Registers[22] <= 32'h00000000;
+			Registers[23] <= 32'h00000000;
+			Registers[24] <= 32'h00000000;
+			Registers[25] <= 32'h00000000;
+			Registers[26] <= 32'h00000000;
+			Registers[27] <= 32'h00000000;
+			Registers[28] <= 32'h00000000;
+			Registers[29] <= 32'h00000000;
+			Registers[30] <= 32'h00000000;
+			Registers[31] <= 32'h00000000;
 		end
     end
 endmodule

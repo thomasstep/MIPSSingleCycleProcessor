@@ -10,7 +10,7 @@ module PCRegister(PC, startPC, Reset_L, Clock);
 	input Clock;
 	output reg[31:0] PC;
 
-	always@(posedge Clock or Reset_L)
+	always@(negedge Clock or Reset_L)
 	begin
 		case(Reset_L)
 			1'b0: begin // Reset_L is activated

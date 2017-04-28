@@ -1,6 +1,6 @@
 To Do:
 -PC register (6.1) (done)
--Read/Fetch an Instruction from InstrMem (not done)
+-Read/Fetch an Instruction from InstrMem (done)
 	-Store in register named IR
 -Build register file (done)
 	-32 32-bit regs
@@ -16,7 +16,7 @@ To Do:
 	-addu, subu, addiu (done)
 	-add, sub, addi (done)
 	-and, andi, or, ori, xor, xori (done)
-	-sll, sra, srl (not done) (need to know what sra is; other two done)
+	-sll, sra, srl (done)
 	-slt, slti, sltu, sltiu (done)
 	-beq, bne, j (not done) (what ALUOp is needed here?)
 	-lw, sw (done)

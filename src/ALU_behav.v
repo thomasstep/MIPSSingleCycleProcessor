@@ -24,6 +24,7 @@
 `define SLL  4'b1000 // shift left logical
 `define SLT  4'b1010 // set result=1 if less than 2's compl
 `define SLTU 4'b1011 // set result=1 if less than unsigned
+`define SRA  4'b1100 // shift right arithmetic
 `define SRL  4'b1001 // shift right logical
 `define SUB  4'b0010 // 2's compl subtract
 `define SUBU 4'b0011 // unsigned subtract
@@ -77,7 +78,8 @@ module ALU_behav( ADin, BDin, ALU_ctr, Result, Overflow, Carry_in, Carry_out, Ze
 	      Result = Carry_out;
 	      $display("SLTU:+R=%d [%b]", Result, Result );
 	   end
-	   `SRL: Result = ADin >> BDin;
+	   `SRA:  Result = ADin >>> BDin;
+	   `SRL:  Result = ADin >> BDin;
 	   `OR :  Result = ADin | BDin;
 	   `AND:  Result = ADin & BDin;
 	   `XOR:  Result = ADin ^ BDin;

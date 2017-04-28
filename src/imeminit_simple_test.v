@@ -4,7 +4,7 @@ initial begin
    Mem[1] = {32'h200b0002};
 //            addi   $11, $0, 2
    Mem[2] = {32'h014b6022};
-//            sub    $12, $10, $11    # $12 = ffffffff
+//            sub    $12, $10, $11    # $12 = ffffffff	
    Mem[3] = {32'h014c6823};
 //            subu   $13, $10, $12    # $13 = 2
    Mem[4] = {32'h014c7020};
@@ -14,5 +14,5 @@ initial begin
    Mem[6] = {32'h2550ffff};
 //            addiu  $16, $10, -1     # $16 = 0
    Mem[7] = {6'd0,5'd0,5'd0,16'd0};
-   //         nop                     #
+//         nop                     #
 end
