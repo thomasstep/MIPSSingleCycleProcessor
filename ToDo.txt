@@ -20,3 +20,5 @@ To Do:
 	-slt, slti, sltu, sltiu (done)
 	-beq, bne, j (not done) (what ALUOp is needed here?)
 	-lw, sw (done)
+-Add support for branch/jump (done) (need to test)
+-Add support for data transfer (done) (need to test)

@@ -51,6 +51,7 @@
 `include "signextend.v"
 `include "ALU_behav.v"
 `include "m555.v"
+`include "lshift2.v"
 
 /*-------------------------- CPU -------------------------------
  * This module implements a single-cycle
@@ -87,10 +88,10 @@ module SingleCycleProc(CLK, Reset_L, startPC, dmemOut);
    input [31:0] startPC;
    output [31:0] dmemOut;
 
-   wire[31:0] PCwire, Instr, Reg1, Reg2, Data, Immed, ALUin, Result;
+   wire[31:0] PCwire, Instr, Reg1, Reg2, Data, Immed, ALUin, Result, PC, JumpDest, PCwithJump, WriteData;
    wire [3:0] ALUOp, ALUFunc;
    wire [4:0] Memaddr;
-   wire Zero, RegDst, ALUSrc, MemtoReg, RegWrite, MemRead, MemWrite, Branch, Jump, SignExtend;
+   wire Zero, RegDst, ALUSrc, MemtoReg, RegWrite, MemRead, MemWrite, Branch, BranchSelect, Jump, SignExtend;
 
    PCRegister PC1(PCwire, startPC, Reset_L, CLK);
    InstrMem IM1(PCwire, Instr);
@@ -98,10 +99,21 @@ module SingleCycleProc(CLK, Reset_L, startPC, dmemOut);
    generalControl Ctrl(RegDst, Branch, MemRead, MemtoReg, ALUOp, MemWrite, ALUSrc, RegWrite, Instr[31:26]);
    ALUControl ALUctrl(ALUFunc, ALUOp, Instr[5:0]);
    MUX5_2to1 MUX1(Instr[20:16], Instr[15:11], RegDst, Memaddr);
-   RegisterFile RF(Reg1, Reg2, Instr[25:21], Instr[20:16], Memaddr, Data, RegWrite, Reset_L, CLK);
+   RegisterFile RF(Reg1, Reg2, Instr[25:21], Instr[20:16], Memaddr, WriteData, RegWrite, Reset_L, CLK);
    SIGN_EXTEND SE(Instr[15:0], Immed);
    MUX32_2to1 MUX2(Reg2, Immed, ALUSrc, ALUin);
    ALU_behav ALU(Reg1, ALUin, ALUFunc, Data, Overflow, 1'b0, Carry_out, Zero);
+   // The next 5 lines are all for supporting control instructions
+   LSHIFT2 LS(Immed, JumpDest);
+   assign PC = PCwire;
+   assign PCwithJump = PC + JumpDest;
+   assign BranchSelect = Branch | 1'b0;
+   MUX32_2to1 MUX3(PC, PCwithJump, BranchSelect, PCwire);
+   // Data transfer instructions
+   DataMem DM1(Data, CLK, MemRead, MemWrite, Reg2, dmemOut);
+   MUX32_2to1 MUX4(Data, dmemOut, MemtoReg, WriteData);
+
+
 
 
 //
