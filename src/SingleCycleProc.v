@@ -103,13 +103,6 @@ module SingleCycleProc(CLK, Reset_L, startPC, dmemOut);
    SIGN_EXTEND SE(Instr[15:0], Immed);
    MUX32_2to1 MUX2(Reg2, Immed, ALUSrc, ALUin);
    ALU_behav ALU(Reg1, ALUin, ALUFunc, Data, Overflow, 1'b0, Carry_out, Zero);
-   // The next 4 lines are all for supporting control instructions
-   /*LSHIFT2 LS(Immed, JumpDest);
-   assign PC = PCwire;
-   assign PCwithJump = PC + JumpDest;
-   assign BranchSelect = Branch & Zero;
-   MUX32_2to1 MUX3(PC, PCwithJump, BranchSelect, MuxOut);
-   assign PCwire = MuxOut;*/
    // Data transfer instructions
    DataMem DM1(Data, CLK, MemRead, MemWrite, Reg2, dmemOut);
    MUX32_2to1 MUX4(Data, dmemOut, MemtoReg, WriteData);
@@ -149,7 +142,7 @@ module testCPU(Reset_L, startPC, testData);
       Reset_L = 0; startPC = 0 * 4;
       #101 // insures reset is asserted across negative clock edge
 	   Reset_L = 1; 
-      #600; // allow enough time for program 1 to run to completion
+      #4660; // allow enough time for program 1 to run to completion
       Reset_L = 0;
       #1 $display ("Program 1: Result: %d", testData);
       

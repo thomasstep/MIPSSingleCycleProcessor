@@ -28,7 +28,6 @@ module PCRegister(PC, startPC, Reset_L, Clock, Jump, Branch, Immed, Zero);
         if(BranchSelect==1'b1) // Basically acts as a mux
         begin
           PC = MuxOut + `FOUR;
-          $display("Jumping: %d", PC);
         end
 			end
 		endcase
