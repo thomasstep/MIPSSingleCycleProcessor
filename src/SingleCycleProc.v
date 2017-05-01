@@ -51,7 +51,7 @@
 `include "signextend.v"
 `include "ALU_behav.v"
 `include "m555.v"
-`include "lshift2.v"
+//`include "lshift2.v"
 
 /*-------------------------- CPU -------------------------------
  * This module implements a single-cycle
@@ -88,12 +88,12 @@ module SingleCycleProc(CLK, Reset_L, startPC, dmemOut);
    input [31:0] startPC;
    output [31:0] dmemOut;
 
-   wire[31:0] PCwire, Instr, Reg1, Reg2, Data, Immed, ALUin, Result, PC, JumpDest, PCwithJump, WriteData;
+   wire[31:0] PCwire, Instr, Reg1, Reg2, Data, Immed, ALUin, Result, PC, JumpDest, PCwithJump, WriteData, MuxOut;
    wire [3:0] ALUOp, ALUFunc;
    wire [4:0] Memaddr;
    wire Zero, RegDst, ALUSrc, MemtoReg, RegWrite, MemRead, MemWrite, Branch, BranchSelect, Jump, SignExtend;
 
-   PCRegister PC1(PCwire, startPC, Reset_L, CLK);
+   PCRegister PC1(PCwire, startPC, Reset_L, CLK, Jump, Branch, Immed, Zero);
    InstrMem IM1(PCwire, Instr);
    // Might need to add jump and signextend to CU
    generalControl Ctrl(RegDst, Branch, MemRead, MemtoReg, ALUOp, MemWrite, ALUSrc, RegWrite, Instr[31:26]);
@@ -103,12 +103,13 @@ module SingleCycleProc(CLK, Reset_L, startPC, dmemOut);
    SIGN_EXTEND SE(Instr[15:0], Immed);
    MUX32_2to1 MUX2(Reg2, Immed, ALUSrc, ALUin);
    ALU_behav ALU(Reg1, ALUin, ALUFunc, Data, Overflow, 1'b0, Carry_out, Zero);
-   // The next 5 lines are all for supporting control instructions
-   LSHIFT2 LS(Immed, JumpDest);
+   // The next 4 lines are all for supporting control instructions
+   /*LSHIFT2 LS(Immed, JumpDest);
    assign PC = PCwire;
    assign PCwithJump = PC + JumpDest;
-   assign BranchSelect = Branch | 1'b0;
-   MUX32_2to1 MUX3(PC, PCwithJump, BranchSelect, PCwire);
+   assign BranchSelect = Branch & Zero;
+   MUX32_2to1 MUX3(PC, PCwithJump, BranchSelect, MuxOut);
+   assign PCwire = MuxOut;*/
    // Data transfer instructions
    DataMem DM1(Data, CLK, MemRead, MemWrite, Reg2, dmemOut);
    MUX32_2to1 MUX4(Data, dmemOut, MemtoReg, WriteData);
@@ -122,8 +123,8 @@ module SingleCycleProc(CLK, Reset_L, startPC, dmemOut);
 //
    /*  Monitor changes in the program counter*/
    always @(PCwire)
-     #10 $display($time," PCwire=%d Instr: op=%d rs=%d rt=%d rd=%d imm16=%d funct=%d",
-	PCwire,Instr[31:26],Instr[25:21],Instr[20:16],Instr[15:11],Instr[15:0],Instr[5:0]);
+     #10 $display($time," PCwire=%d Instr: op=%d rs=%d rt=%d rd=%d imm16=%d funct=%d; Result: %d, Zero: %d",
+	PCwire,Instr[31:26],Instr[25:21],Instr[20:16],Instr[15:11],Instr[15:0],Instr[5:0], Data, Zero);
    
 
    /*   Monitors memory writes
@@ -147,8 +148,8 @@ module testCPU(Reset_L, startPC, testData);
       // Your program 1
       Reset_L = 0; startPC = 0 * 4;
       #101 // insures reset is asserted across negative clock edge
-	  Reset_L = 1; 
-      #710; // allow enough time for program 1 to run to completion
+	   Reset_L = 1; 
+      #600; // allow enough time for program 1 to run to completion
       Reset_L = 0;
       #1 $display ("Program 1: Result: %d", testData);
       

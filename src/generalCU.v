@@ -5,7 +5,7 @@
 `define RTYPE 6'b000000 // R-Type instruction
 `define LW 6'b100011 // Load Word instruction
 `define SW 6'b101011 // Store Word instruction
-`define BRANCH 6'b000100 // Branch instruction
+`define BEQ 6'b000100 // Branch instruction
 
 // The following opcodes are used in the second part of the project
 // Some instructions for the second part of this program are R-Type
@@ -41,6 +41,16 @@ module generalControl(RegDst, Branch, MemRead, MemtoReg, ALUOp, MemWrite, ALUSrc
 	always@(Instruction)
 	begin
 		case(Instruction)
+			`NOP: begin
+				RegDst = 1'bx;
+				ALUSrc = 1'bx;
+				MemtoReg = 1'bx;
+				RegWrite = 1'bx;
+				MemRead = 1'bx;
+				MemWrite = 1'bx;
+				Branch = 1'bx;
+				ALUOp = 4'b1111;
+			end
 			`RTYPE: begin
 				RegDst = 1'b1;
 				ALUSrc = 1'b0;
@@ -71,7 +81,7 @@ module generalControl(RegDst, Branch, MemRead, MemtoReg, ALUOp, MemWrite, ALUSrc
 				Branch = 1'b0;
 				ALUOp = 4'b0000;
 			end
-			`BRANCH: begin
+			`BEQ: begin
 				RegDst = 1'bx;
 				ALUSrc = 1'b0;
 				MemtoReg = 1'bx;
@@ -151,15 +161,26 @@ module generalControl(RegDst, Branch, MemRead, MemtoReg, ALUOp, MemWrite, ALUSrc
 				Branch = 1'b0;
 				ALUOp = 4'b1010;
 			end
-			/*`BEQ: begin
-
-			end
 			`BNE: begin
-
+				RegDst = 1'bx;
+				ALUSrc = 1'b0;
+				MemtoReg = 1'bx;
+				RegWrite = 1'b0;
+				MemRead = 1'b0;
+				MemWrite = 1'b0;
+				Branch = 1'b1;
+				ALUOp = 4'b1011;
 			end
 			`J: begin
-
-			end*/
+				RegDst = 1'bx;
+				ALUSrc = 1'b0;
+				MemtoReg = 1'bx;
+				RegWrite = 1'b0;
+				MemRead = 1'b0;
+				MemWrite = 1'b0;
+				Branch = 1'b1;
+				ALUOp = 4'b1100;
+			end
 		endcase
 	end
 endmodule

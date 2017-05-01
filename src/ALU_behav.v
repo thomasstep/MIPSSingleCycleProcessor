@@ -21,6 +21,7 @@
 `define ADDU 4'b0001 // unsigned add
 `define AND  4'b0100 // bitwise AND
 `define OR   4'b0101 // bitwise OR
+`define NOTEQ 4'b1101 // not equal (Result = 0 if not equal)
 `define SLL  4'b1000 // shift left logical
 `define SLT  4'b1010 // set result=1 if less than 2's compl
 `define SLTU 4'b1011 // set result=1 if less than unsigned
@@ -29,6 +30,7 @@
 `define SUB  4'b0010 // 2's compl subtract
 `define SUBU 4'b0011 // unsigned subtract
 `define XOR  4'b0110 // bitwise XOR
+`define ZERO 4'b1110 // gives a zero for jump
 
 `define NOP  4'b0000 // do nothing
 
@@ -84,6 +86,15 @@ module ALU_behav( ADin, BDin, ALU_ctr, Result, Overflow, Carry_in, Carry_out, Ze
 	   `AND:  Result = ADin & BDin;
 	   `XOR:  Result = ADin ^ BDin;
 	   `NOP:  Result = ADin;
+	   `NOTEQ: begin
+	   		if(ADin!==BDin)
+	   			Result = 32'd0;
+	   		else
+	   			Result = 32'd1;
+	   end
+	   `ZERO: begin
+	   		Result = 32'd0;
+	   end
 	 endcase
 	 
 	 Zero = ~| Result;  // Result = 32'b0

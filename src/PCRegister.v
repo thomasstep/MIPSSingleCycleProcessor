@@ -1,14 +1,21 @@
 // By Thomas Step
 
 `define FOUR 32'b00000000000000000000000000000100
-//`include "m555.v"
+`include "lshift2.v"
 
-module PCRegister(PC, startPC, Reset_L, Clock);
+module PCRegister(PC, startPC, Reset_L, Clock, Jump, Branch, Immed, Zero);
 
-	input [31:0] startPC;
+	input [31:0] startPC, Immed;
 	input Reset_L;
-	input Clock;
+	input Clock, Jump, Branch, Zero;
 	output reg[31:0] PC;
+  wire BranchSelect;
+  wire [31:0] PCwithJump, JumpDest, MuxOut;
+
+  LSHIFT2 LS(Immed, JumpDest);
+  assign PCwithJump = PC + JumpDest;
+  assign BranchSelect = Branch & Zero;
+  MUX32_2to1 MUX3(PC, PCwithJump, BranchSelect, MuxOut);
 
 	always@(negedge Clock or Reset_L)
 	begin
@@ -18,9 +25,14 @@ module PCRegister(PC, startPC, Reset_L, Clock);
 			end
 			1'b1: begin // As clock goes on, 
 				PC = PC + `FOUR; // Increment PC by 4
+        if(BranchSelect==1'b1) // Basically acts as a mux
+        begin
+          PC = MuxOut + `FOUR;
+          $display("Jumping: %d", PC);
+        end
 			end
 		endcase
-	end
+  end
 endmodule
 
 /*module TestPCReg;

@@ -4,25 +4,25 @@
 `define RTYPE   4'b0010 // R-Type instruction
 `define LW      4'b0000 // Load Word instruction
 `define SW      4'b0000 // Store Word instruction
-`define BRANCH  4'b0001 // Branch instruction
+`define BEQ     4'b0001 // Branch instruction
+`define NOP     4'b1111 // NOP instruction
 //I-Type (All opcodes except 000000, 00001x, and 0100xx)
 `define ADDI    4'b0100
 `define ADDIU   4'b0101
 `define ANDI    4'b0110
-`define BEQ     4'b000100
-`define BNE     4'b000101
+`define BEQ     4'b0001
+`define BNE     4'b1011
 `define BLEZ    4'b000110
 `define BLTZ    4'b000001
 `define ORI     4'b0111
 `define XORI    4'b1000
-`define NOP     4'b110110
 `define LUI     4'b001111
 `define SLTI    4'b1001
 `define SLTIU   4'b1010
 `define LB      4'b100000
 `define SB      4'b101000
 // J-Type (Opcode 00001x)
-`define J       4'b000010
+`define J       4'b1100
 `define JAL     4'b000011
 
 
@@ -50,6 +50,7 @@
 `define ADDU 4'b0001 // unsigned add
 `define AND  4'b0100 // bitwise AND
 `define OR   4'b0101 // bitwise OR
+`define NOTEQ 4'b1101 // Not equal comparison (for bne exclusively)
 `define SLL  4'b1000 // shift left logical
 `define SLT  4'b1010 // set result=1 if less than 2's compl
 `define SLTU 4'b1011 // set result=1 if less than unsigned
@@ -58,6 +59,7 @@
 `define SUB  4'b0010 // 2's compl subtract
 `define SUBU 4'b0011 // unsigned subtract
 `define XOR  4'b0110 // bitwise XOR
+`define ZERO 4'b1110 // Automatic zero (for jump exclusively)
 
 `define NOP  4'b0000 // do nothing
 
@@ -71,6 +73,9 @@ module ALUControl(ALUFunc, ALUOp, Instruction);
 	always@(Instruction or ALUOp)
 	begin
 		case(ALUOp)
+			`NOP: begin
+				ALUFunc = `NOP;
+			end
 			`RTYPE: begin
 				case(Instruction)
 					`ADDF: begin
@@ -120,8 +125,11 @@ module ALUControl(ALUFunc, ALUOp, Instruction);
 			`SW: begin
 				ALUFunc = `ADD;
 			end
-			`BRANCH: begin
+			`BEQ: begin
 				ALUFunc = `SUB;
+			end
+			`BNE: begin
+				ALUFunc = `NOTEQ;
 			end
 			`ADDI: begin
 				ALUFunc = `ADD;
@@ -143,6 +151,9 @@ module ALUControl(ALUFunc, ALUOp, Instruction);
 			end
 			`SLTIU: begin
 				ALUFunc = `SLTU;
+			end
+			`J: begin
+				ALUFunc = `ZERO;
 			end
 		endcase
 	end

@@ -18,7 +18,7 @@ To Do:
 	-and, andi, or, ori, xor, xori (done)
 	-sll, sra, srl (done)
 	-slt, slti, sltu, sltiu (done)
-	-beq, bne, j (not done) (what ALUOp is needed here?)
+	-beq, bne, j (done) (what ALUOp is needed here?)
 	-lw, sw (done)
 -Add support for branch/jump (done) (need to test)
 -Add support for data transfer (done) (need to test)

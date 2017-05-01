@@ -55,7 +55,7 @@ module RegisterFile(ReadDataOne, ReadDataTwo, ReadRegOne, ReadRegTwo, WriteReg, 
 		if(RegWrite == 1'b1) 
 		begin
 			Registers[WriteReg] <= WriteData;
-			$display("FirstReg: %d; SecondReg: %d; WriteReg: %d; Data: %d; Reset: %d;\n0 = %d;\n1 = %d;\n2 = %d;\n3 = %d;\n4 = %d;\n5 = %d;\n6 = %d;\n7 = %d;\n8 = %d;\n9 = %d;\n10 = %d;\n11 = %d;\n12 = %d;\n13 = %d;\n14 = %d;\n15 = %d;\n16 = %d;\n",ReadRegOne,ReadRegTwo,WriteReg,WriteData,Reset_L,Registers[0],Registers[1],Registers[2],Registers[3],Registers[4],Registers[5],Registers[6],Registers[7],Registers[8],Registers[9],Registers[10],Registers[11],Registers[12],Registers[13],Registers[14],Registers[15],Registers[16],Registers[17]);
+			$display("FirstReg: %d; SecondReg: %d; WriteReg: %d; Data: %d; Reset: %d;\n0 = %d;\n1 = %d;\n2 = %d;\n3 = %d;\n4 = %d;\n5 = %d;\n6 = %d;\n7 = %d;\n8 = %d;\n9 = %d;\n10 = %d;\n11 = %d;\n12 = %d;\n13 = %d;\n14 = %d;\n15 = %d;\n16 = %d;\n17 = %d;\n18 = %d;\n19 = %d;\n20 = %d;\n21 = %d;\n22 = %d;\n23 = %d;\n24 = %d;\n25 = %d;\n26 = %d;\n27 = %d;\n28 = %d;\n29 = %d;\n30 = %d;\n31 = %d;\n",ReadRegOne,ReadRegTwo,WriteReg,WriteData,Reset_L,Registers[0],Registers[1],Registers[2],Registers[3],Registers[4],Registers[5],Registers[6],Registers[7],Registers[8],Registers[9],Registers[10],Registers[11],Registers[12],Registers[13],Registers[14],Registers[15],Registers[16],Registers[17],Registers[18],Registers[19],Registers[20],Registers[21],Registers[22],Registers[23],Registers[24],Registers[25],Registers[26],Registers[27],Registers[28],Registers[29],Registers[30],Registers[31]);
 		end
 		if(Reset_L == 1'b0) // If Reset_L is activated
 		begin // Set all registers to 0
