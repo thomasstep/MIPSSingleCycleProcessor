@@ -59,7 +59,6 @@
 `define SUB  4'b0010 // 2's compl subtract
 `define SUBU 4'b0011 // unsigned subtract
 `define XOR  4'b0110 // bitwise XOR
-`define ZERO 4'b1110 // Automatic zero (for jump exclusively)
 
 `define NOP  4'b0000 // do nothing
 
@@ -153,7 +152,7 @@ module ALUControl(ALUFunc, ALUOp, Instruction);
 				ALUFunc = `SLTU;
 			end
 			`J: begin
-				ALUFunc = `ZERO;
+				ALUFunc = `NOP;
 			end
 		endcase
 	end

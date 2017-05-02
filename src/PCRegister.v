@@ -29,6 +29,10 @@ module PCRegister(PC, startPC, Reset_L, Clock, Jump, Branch, Immed, Zero);
         begin
           PC = MuxOut + `FOUR;
         end
+        if(Jump==1'b1)
+        begin
+          PC = JumpDest;
+        end
 			end
 		endcase
   end

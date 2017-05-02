@@ -96,7 +96,7 @@ module SingleCycleProc(CLK, Reset_L, startPC, dmemOut);
    PCRegister PC1(PCwire, startPC, Reset_L, CLK, Jump, Branch, Immed, Zero);
    InstrMem IM1(PCwire, Instr);
    // Might need to add jump and signextend to CU
-   generalControl Ctrl(RegDst, Branch, MemRead, MemtoReg, ALUOp, MemWrite, ALUSrc, RegWrite, Instr[31:26]);
+   generalControl Ctrl(RegDst, Branch, Jump, MemRead, MemtoReg, ALUOp, MemWrite, ALUSrc, RegWrite, Instr[31:26]);
    ALUControl ALUctrl(ALUFunc, ALUOp, Instr[5:0]);
    MUX5_2to1 MUX1(Instr[20:16], Instr[15:11], RegDst, Memaddr);
    RegisterFile RF(Reg1, Reg2, Instr[25:21], Instr[20:16], Memaddr, WriteData, RegWrite, Reset_L, CLK);
@@ -142,7 +142,8 @@ module testCPU(Reset_L, startPC, testData);
       Reset_L = 0; startPC = 0 * 4;
       #101 // insures reset is asserted across negative clock edge
 	   Reset_L = 1; 
-      #4660; // allow enough time for program 1 to run to completion
+      #500
+      //#4660; // allow enough time for program 1 to run to completion
       Reset_L = 0;
       #1 $display ("Program 1: Result: %d", testData);
       

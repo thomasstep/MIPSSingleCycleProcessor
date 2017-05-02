@@ -30,12 +30,12 @@
 `define J       6'b000010
 `define JAL     6'b000011
 
-module generalControl(RegDst, Branch, MemRead, MemtoReg, ALUOp, MemWrite, ALUSrc, RegWrite, Instruction);
+module generalControl(RegDst, Branch, Jump, MemRead, MemtoReg, ALUOp, MemWrite, ALUSrc, RegWrite, Instruction);
 
 	input[5:0] Instruction; // This is actually the Op field from the instruction
-	output RegDst, Branch, MemRead, MemtoReg, MemWrite, ALUSrc, RegWrite;
+	output RegDst, Branch, MemRead, MemtoReg, MemWrite, ALUSrc, RegWrite, Jump;
 	output[3:0] ALUOp;
-	reg RegDst, Branch, MemRead, MemtoReg, MemWrite, ALUSrc, RegWrite;
+	reg RegDst, Branch, MemRead, MemtoReg, MemWrite, ALUSrc, RegWrite, Jump;
 	reg[3:0] ALUOp;
 
 	always@(Instruction)
@@ -49,6 +49,7 @@ module generalControl(RegDst, Branch, MemRead, MemtoReg, ALUOp, MemWrite, ALUSrc
 				MemRead = 1'bx;
 				MemWrite = 1'bx;
 				Branch = 1'bx;
+				Jump = 1'bx;
 				ALUOp = 4'b1111;
 			end
 			`RTYPE: begin
@@ -59,6 +60,7 @@ module generalControl(RegDst, Branch, MemRead, MemtoReg, ALUOp, MemWrite, ALUSrc
 				MemRead = 1'b0;
 				MemWrite = 1'b0;
 				Branch = 1'b0;
+				Jump = 1'b0;
 				ALUOp = 4'b0010;
 			end
 			`LW: begin
@@ -69,6 +71,7 @@ module generalControl(RegDst, Branch, MemRead, MemtoReg, ALUOp, MemWrite, ALUSrc
 				MemRead = 1'b1;
 				MemWrite = 1'b0;
 				Branch = 1'b0;
+				Jump = 1'b0;
 				ALUOp = 4'b0000;
 			end
 			`SW: begin
@@ -79,6 +82,7 @@ module generalControl(RegDst, Branch, MemRead, MemtoReg, ALUOp, MemWrite, ALUSrc
 				MemRead = 1'b0;
 				MemWrite = 1'b1;
 				Branch = 1'b0;
+				Jump = 1'b0;
 				ALUOp = 4'b0000;
 			end
 			`BEQ: begin
@@ -89,6 +93,7 @@ module generalControl(RegDst, Branch, MemRead, MemtoReg, ALUOp, MemWrite, ALUSrc
 				MemRead = 1'b0;
 				MemWrite = 1'b0;
 				Branch = 1'b1;
+				Jump = 1'b0;
 				ALUOp = 4'b0001;
 			end
 			`ADDI: begin
@@ -99,6 +104,7 @@ module generalControl(RegDst, Branch, MemRead, MemtoReg, ALUOp, MemWrite, ALUSrc
 				MemRead = 1'b0;
 				MemWrite = 1'b0;
 				Branch = 1'b0;
+				Jump = 1'b0;
 				ALUOp = 4'b0100;	
 			end
 			`ADDIU: begin
@@ -109,6 +115,7 @@ module generalControl(RegDst, Branch, MemRead, MemtoReg, ALUOp, MemWrite, ALUSrc
 				MemRead = 1'b0;
 				MemWrite = 1'b0;
 				Branch = 1'b0;
+				Jump = 1'b0;
 				ALUOp = 4'b0101;	
 			end
 			`ANDI: begin
@@ -119,6 +126,7 @@ module generalControl(RegDst, Branch, MemRead, MemtoReg, ALUOp, MemWrite, ALUSrc
 				MemRead = 1'b0;
 				MemWrite = 1'b0;
 				Branch = 1'b0;
+				Jump = 1'b0;
 				ALUOp = 4'b0110;	
 			end
 			`ORI: begin
@@ -129,6 +137,7 @@ module generalControl(RegDst, Branch, MemRead, MemtoReg, ALUOp, MemWrite, ALUSrc
 				MemRead = 1'b0;
 				MemWrite = 1'b0;
 				Branch = 1'b0;
+				Jump = 1'b0;
 				ALUOp = 4'b0111;	
 			end
 			`XORI: begin
@@ -139,6 +148,7 @@ module generalControl(RegDst, Branch, MemRead, MemtoReg, ALUOp, MemWrite, ALUSrc
 				MemRead = 1'b0;
 				MemWrite = 1'b0;
 				Branch = 1'b0;
+				Jump = 1'b0;
 				ALUOp = 4'b1000;
 			end
 			`SLTI: begin
@@ -149,6 +159,7 @@ module generalControl(RegDst, Branch, MemRead, MemtoReg, ALUOp, MemWrite, ALUSrc
 				MemRead = 1'b0;
 				MemWrite = 1'b0;
 				Branch = 1'b0;
+				Jump = 1'b0;
 				ALUOp = 4'b1001;
 			end
 			`SLTIU: begin
@@ -159,6 +170,7 @@ module generalControl(RegDst, Branch, MemRead, MemtoReg, ALUOp, MemWrite, ALUSrc
 				MemRead = 1'b0;
 				MemWrite = 1'b0;
 				Branch = 1'b0;
+				Jump = 1'b0;
 				ALUOp = 4'b1010;
 			end
 			`BNE: begin
@@ -169,6 +181,7 @@ module generalControl(RegDst, Branch, MemRead, MemtoReg, ALUOp, MemWrite, ALUSrc
 				MemRead = 1'b0;
 				MemWrite = 1'b0;
 				Branch = 1'b1;
+				Jump = 1'b0;
 				ALUOp = 4'b1011;
 			end
 			`J: begin
@@ -178,7 +191,8 @@ module generalControl(RegDst, Branch, MemRead, MemtoReg, ALUOp, MemWrite, ALUSrc
 				RegWrite = 1'b0;
 				MemRead = 1'b0;
 				MemWrite = 1'b0;
-				Branch = 1'b1;
+				Branch = 1'b0;
+				Jump = 1'b1;
 				ALUOp = 4'b1100;
 			end
 		endcase

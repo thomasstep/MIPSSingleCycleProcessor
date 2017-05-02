@@ -30,7 +30,6 @@
 `define SUB  4'b0010 // 2's compl subtract
 `define SUBU 4'b0011 // unsigned subtract
 `define XOR  4'b0110 // bitwise XOR
-`define ZERO 4'b1110 // gives a zero for jump
 
 `define NOP  4'b0000 // do nothing
 
@@ -91,9 +90,6 @@ module ALU_behav( ADin, BDin, ALU_ctr, Result, Overflow, Carry_in, Carry_out, Ze
 	   			Result = 32'd0;
 	   		else
 	   			Result = 32'd1;
-	   end
-	   `ZERO: begin
-	   		Result = 32'd0;
 	   end
 	 endcase
 	 
